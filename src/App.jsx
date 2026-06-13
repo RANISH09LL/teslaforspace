@@ -8,7 +8,7 @@ import AgentActivityGraph from './components/AgentActivityGraph';
 import MissionReplay from './components/MissionReplay';
 import AutonomyAnalytics from './components/AutonomyAnalytics';
 
-const WS_URL = import.meta.env.VITE_WS_URL || (window.location.protocol === 'https:' ? 'wss://' : 'ws://') + window.location.hostname + ':8080';
+const WS_URL = window.location.hostname === 'localhost' ? 'ws://localhost:8080' : 'wss://stellarx-backend.onrender.com';
 
 function ChaosPanel({ ws }) {
   const [activeBtn, setActiveBtn] = useState(null);
