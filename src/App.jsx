@@ -10,15 +10,14 @@ import AutonomyAnalytics from './components/AutonomyAnalytics';
 
 const WS_URL = window.location.hostname === 'localhost' ? 'ws://localhost:8080' : 'wss://stellarx-backend.onrender.com';
 
-function ChaosPanel({ ws }) {
-  const [activeBtn, setActiveBtn] = useState(null);
+function ChaosPanel({ ws, isAwaitingAI, setIsAwaitingAI, activeBtn, setActiveBtn }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const injectChaos = (payload) => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
+    if (ws && ws.readyState === WebSocket.OPEN && !isAwaitingAI) {
       setActiveBtn(payload);
+      setIsAwaitingAI(true);
       ws.send(JSON.stringify({ type: 'INJECT_CHAOS', payload }));
-      setTimeout(() => setActiveBtn(null), 1500);
       setIsExpanded(false);
     }
   };
@@ -30,14 +29,14 @@ function ChaosPanel({ ws }) {
         <span className="md:hidden text-white/60">{isExpanded ? '▼' : '▲'}</span>
       </div>
       <div className={`${isExpanded ? 'flex' : 'hidden'} md:flex flex-col gap-2 md:gap-4`}>
-        <button onClick={() => injectChaos('DEBRIS_STORM')} className="bg-transparent border border-neon-red text-neon-red py-1 md:py-1 px-4 text-[10px] md:text-sm hover:bg-neon-red hover:text-space-black transition-colors duration-300 cursor-pointer">
-          {activeBtn === 'DEBRIS_STORM' ? 'INJECTING...' : 'DEBRIS STORM'}
+        <button disabled={isAwaitingAI} onClick={() => injectChaos('DEBRIS_STORM')} className={`bg-transparent border border-neon-red text-neon-red py-1 md:py-1 px-4 text-[10px] md:text-sm transition-colors duration-300 ${isAwaitingAI ? 'opacity-50 cursor-not-allowed' : 'hover:bg-neon-red hover:text-space-black cursor-pointer'}`}>
+          {activeBtn === 'DEBRIS_STORM' ? 'AWAITING AI...' : 'DEBRIS STORM'}
         </button>
-        <button onClick={() => injectChaos('SOLAR_FLARE')} className="bg-transparent border border-white/50 text-white/80 py-1 md:py-1 px-4 text-[10px] md:text-sm hover:bg-white hover:text-space-black transition-colors duration-300 cursor-pointer">
-          {activeBtn === 'SOLAR_FLARE' ? 'INJECTING...' : 'SOLAR FLARE'}
+        <button disabled={isAwaitingAI} onClick={() => injectChaos('SOLAR_FLARE')} className={`bg-transparent border border-white/50 text-white/80 py-1 md:py-1 px-4 text-[10px] md:text-sm transition-colors duration-300 ${isAwaitingAI ? 'opacity-50 cursor-not-allowed' : 'hover:bg-white hover:text-space-black cursor-pointer'}`}>
+          {activeBtn === 'SOLAR_FLARE' ? 'AWAITING AI...' : 'SOLAR FLARE'}
         </button>
-        <button onClick={() => injectChaos('SYSTEM_FAILURE')} className="bg-red-500/20 border border-red-500 text-red-500 py-1 md:py-1 px-4 text-[10px] md:text-sm hover:bg-red-500 hover:text-white transition-colors duration-300 font-bold cursor-pointer">
-          {activeBtn === 'SYSTEM_FAILURE' ? 'INJECTING...' : 'SYSTEM FAILURE'}
+        <button disabled={isAwaitingAI} onClick={() => injectChaos('SYSTEM_FAILURE')} className={`bg-red-500/20 border border-red-500 text-red-500 py-1 md:py-1 px-4 text-[10px] md:text-sm font-bold transition-colors duration-300 ${isAwaitingAI ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-500 hover:text-white cursor-pointer'}`}>
+          {activeBtn === 'SYSTEM_FAILURE' ? 'AWAITING AI...' : 'SYSTEM FAILURE'}
         </button>
       </div>
     </div>
@@ -55,6 +54,8 @@ function App() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [demoRunning, setDemoRunning] = useState(false);
   const [demoOverlay, setDemoOverlay] = useState(null);
+  const [isAwaitingAI, setIsAwaitingAI] = useState(false);
+  const [activeChaosBtn, setActiveChaosBtn] = useState(null);
 
   useEffect(() => {
     const socket = new WebSocket(WS_URL);
@@ -69,6 +70,8 @@ function App() {
           setTelemetry(msg.data);
         } else if (msg.type === 'AGENT_DECISION') {
           setDecision(msg.data);
+          setIsAwaitingAI(false);
+          setActiveChaosBtn(null);
         } else if (msg.type === 'MISSION_HANDOFF') {
           setHandoff(msg.data);
           // Show handoff for 3s, then flash recovery banner
@@ -361,18 +364,18 @@ function App() {
               
               {/* LEFT: Chaos */}
               <div className="w-full md:w-[300px] pointer-events-auto flex flex-col gap-4">
-                <ChaosPanel ws={ws} />
+                <ChaosPanel ws={ws} isAwaitingAI={isAwaitingAI} setIsAwaitingAI={setIsAwaitingAI} activeBtn={activeChaosBtn} setActiveBtn={setActiveChaosBtn} />
               </div>
               
               {/* CENTER: Agent Activity */}
               <div className="hidden md:block flex-1 max-w-[600px] pointer-events-auto h-[180px]">
-                {decision && <AgentActivityGraph decision={decision} />}
+                {decision && <div className="h-full animate-slide-up-fade"><AgentActivityGraph decision={decision} /></div>}
               </div>
 
               {/* RIGHT: AI Decision Cards & Forecast */}
               <div className="w-full md:w-[450px] pointer-events-auto flex flex-col justify-end relative">
                 {decision ? (
-                  <div className="relative">
+                  <div className="relative animate-slide-up-fade">
                     <button 
                       onClick={() => setDecision(null)} 
                       className="absolute -top-3 -right-3 md:-top-4 md:-right-4 w-8 h-8 rounded-full bg-red-500 text-white font-bold text-sm flex items-center justify-center z-50 cursor-pointer shadow-[0_0_10px_rgba(255,0,0,0.5)] border border-red-300 hover:bg-red-600 transition-colors"
