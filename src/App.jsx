@@ -51,7 +51,7 @@ function App() {
   const [ws, setWs] = useState(null);
   const [viewMode, setViewMode] = useState('COMMANDER');
   const [activeNodeId, setActiveNodeId] = useState(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(window.innerWidth >= 768);
   const [demoRunning, setDemoRunning] = useState(false);
   const [demoOverlay, setDemoOverlay] = useState(null);
   const [isAwaitingAI, setIsAwaitingAI] = useState(false);
@@ -307,9 +307,9 @@ function App() {
         ) : (
           <>
             {/* EGO View: Side/Bottom Drawer */}
-            <div className={`fixed left-0 right-0 md:left-auto md:right-0 md:top-24 bottom-16 md:bottom-0 w-full md:w-80 h-[60vh] md:h-[calc(100vh-6rem)] bg-black/90 backdrop-blur-xl border-t md:border-t-0 md:border-l border-white/20 font-mono text-xs text-white/60 transition-transform duration-500 z-[110] pointer-events-auto flex flex-col ${isDrawerOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:translate-y-0 md:translate-x-full'}`}>
+            <div className={`fixed left-0 right-0 md:right-0 md:top-24 bottom-16 md:bottom-0 w-full md:w-80 h-[60vh] md:h-[calc(100vh-6rem)] bg-black/90 backdrop-blur-xl border-t md:border-t-0 md:border-l border-white/20 font-mono text-xs text-white/60 transition-transform duration-500 z-[110] pointer-events-auto flex flex-col ${isDrawerOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:translate-y-0 md:translate-x-full'}`}>
                <div 
-                 className="absolute left-1/2 -top-8 -translate-x-1/2 md:left-auto md:-left-10 md:top-1/2 md:-translate-y-1/2 md:-translate-x-0 bg-black/90 border border-white/20 px-4 py-1 md:px-2 md:py-8 text-[10px] tracking-widest text-white/50 cursor-pointer hover:bg-white border-l-neon-blue hover:text-black hover:border-white transition-all z-10 flex items-center justify-center shadow-[0_0_15px_rgba(0,0,0,0.8)]" 
+                 className="absolute left-1/2 -top-8 -translate-x-1/2 md:-left-10 md:top-1/2 md:-translate-y-1/2 md:-translate-x-0 bg-black/90 border border-white/20 px-4 py-1 md:px-2 md:py-8 text-[10px] tracking-widest text-white/50 cursor-pointer hover:bg-white border-l-neon-blue hover:text-black hover:border-white transition-all z-10 flex items-center justify-center shadow-[0_0_15px_rgba(0,0,0,0.8)]" 
                  onClick={() => setIsDrawerOpen(!isDrawerOpen)}
                >
                  <span className="block md:hidden">TELEMETRY {isDrawerOpen ? '▼' : '▲'}</span>
