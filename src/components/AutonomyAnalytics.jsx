@@ -45,11 +45,13 @@ export default function AutonomyAnalytics({ telemetry }) {
   ];
 
   return (
-    <div className="relative w-full h-full font-sans text-white overflow-hidden pointer-events-auto bg-black">
+    <div className="relative w-full min-h-full font-sans text-white pointer-events-auto bg-black pb-32">
       
-      <StarfieldBackground />
-      <div className="absolute inset-0 opacity-10 bg-[url('/galaxy-bg.jpg')] bg-cover bg-center grayscale pointer-events-none mix-blend-screen z-0"></div>
-      <div className="texture-noise z-10"></div>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <StarfieldBackground />
+        <div className="absolute inset-0 opacity-10 bg-[url('/galaxy-bg.jpg')] bg-cover bg-center grayscale mix-blend-screen z-0"></div>
+        <div className="texture-noise z-10"></div>
+      </div>
 
       <div className="relative z-20 w-full h-full flex items-center justify-center p-6 md:p-16 pt-16 md:pt-16">
          

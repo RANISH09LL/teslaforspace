@@ -203,7 +203,7 @@ function App() {
       )}
 
       {/* Main UI Overlay Grid */}
-      <div className={`poster-grid relative z-10 overflow-hidden ${viewMode === 'EGO' ? 'pointer-events-none' : ''}`}>
+      <div className={`poster-grid relative z-10 overflow-x-hidden ${viewMode === 'EGO' ? 'pointer-events-none' : ''}`}>
         
         {/* Top Bar */}
         <div className="col-start-1 col-end-4 row-start-1 flex flex-col md:flex-row justify-between items-start md:items-center mb-8 pointer-events-auto bg-black/40 backdrop-blur-md p-4 border-b border-white/10 z-50">
@@ -254,11 +254,11 @@ function App() {
 
         {/* Main Content */}
         {viewMode === 'COMMANDER' ? (
-          <div className="col-start-1 col-end-4 row-start-2 w-full h-[60vh] md:h-[800px] pointer-events-auto">
+          <div className="col-start-1 col-end-4 row-start-2 w-full pointer-events-auto">
              <CommanderView telemetry={telemetry} visualState={visualState} />
           </div>
         ) : viewMode === 'ANALYTICS' ? (
-          <div className="col-start-1 col-end-4 row-start-2 w-full h-[60vh] md:h-[800px] pointer-events-auto overflow-y-auto">
+          <div className="col-start-1 col-end-4 row-start-2 w-full pointer-events-auto">
              <AutonomyAnalytics telemetry={telemetry} />
           </div>
         ) : viewMode === 'FLEET' ? (
