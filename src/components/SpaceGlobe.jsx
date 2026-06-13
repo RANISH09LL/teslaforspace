@@ -309,7 +309,7 @@ export default function SpaceGlobe({ telemetry, visualState = 'NOMINAL', handoff
       </div>
       
       <div className={`w-full h-full border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative bg-black transition-colors duration-1000`}>
-        <Canvas camera={{ position: [0, 2, 12], fov: 45 }}>
+        <Canvas camera={{ position: [0, 2, 18], fov: 45 }}>
           <ambientLight intensity={0.5} />
           <directionalLight position={[10, 10, 5]} intensity={2} color="#ffffff" />
           <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
@@ -323,7 +323,7 @@ export default function SpaceGlobe({ telemetry, visualState = 'NOMINAL', handoff
             handoffEvent={handoffEvent}
           />
 
-          <OrbitControls enableZoom={true} autoRotate autoRotateSpeed={0.5 * (telemetry?.timeMultiplier || 1)} minDistance={6} maxDistance={20} />
+          <OrbitControls enableZoom={true} autoRotate autoRotateSpeed={0.5 * (telemetry?.timeMultiplier || 1)} minDistance={6} maxDistance={40} />
         </Canvas>
       </div>
     </div>

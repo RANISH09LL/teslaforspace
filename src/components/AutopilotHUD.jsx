@@ -140,7 +140,7 @@ export default function AutopilotHUD({ telemetry, decision, visualState }) {
       
       {/* 3D Canvas */}
       <div className="w-full h-full overflow-hidden hud-glow-blue bg-black">
-        <Canvas camera={{ position: [2.5, 1.5, -4], fov: 50, far: 10000 }}>
+        <Canvas camera={{ position: [5, 3, -8], fov: 50, far: 10000 }}>
           {/* Lighting */}
           <ambientLight intensity={0.2} />
           <directionalLight position={[10, 10, -10]} intensity={2} color="#ffffff" />
