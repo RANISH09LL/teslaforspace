@@ -113,7 +113,7 @@ wss.on('connection', (ws) => {
     });
 });
 
-// 10Hz Master Loop
+// 1Hz Master Loop (Reduced from 10Hz to save bandwidth)
 setInterval(() => {
     const telemetry = physicsEngine.tick();
     const payload = JSON.stringify({ type: 'TELEMETRY_STREAM', data: telemetry });
@@ -122,9 +122,9 @@ setInterval(() => {
             client.send(payload);
         }
     });
-}, 100);
+}, 1000);
 
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
     console.log(`[STELLAR X] Backend Node Online on port ${PORT}`);
     console.log(`[STELLAR X] Telemetry stream broadcasting at ws://localhost:${PORT}`);
