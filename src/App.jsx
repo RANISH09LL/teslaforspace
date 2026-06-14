@@ -8,7 +8,7 @@ import AgentActivityGraph from './components/AgentActivityGraph';
 import MissionReplay from './components/MissionReplay';
 import AutonomyAnalytics from './components/AutonomyAnalytics';
 
-const WS_URL = window.location.hostname === 'localhost' ? 'ws://localhost:8080' : 'wss://stellarx-backend.onrender.com';
+const WS_URL = window.location.hostname === 'localhost' ? 'ws://localhost:8080' : 'wss://stellarx-backend-h4v7.onrender.com';
 
 function ChaosPanel({ ws, isAwaitingAI, setIsAwaitingAI, activeBtn, setActiveBtn }) {
   const [isExpanded, setIsExpanded] = useState(false);
